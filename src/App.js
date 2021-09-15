@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
-
+import './index.css';
+import Axios from 'axios';
+import { useState } from 'react';
 function App() {
+
+  const [imageSelected, setImageSelected] = useState("")
+
+  const uploadImage = () => {
+    const formData = new FormData();
+    formData.append('file', imageSelected)
+    formData.append('upload_preset', 'cultetti')
+
+    Axios.post('https://api.cloudinary.com/v1_1//ugwutotheeshoes/image/upload', formData).then((response) => {
+      console.log(response)
+    })
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Uploads for Cloudinary API</h1>
+      <div className="container">
+      <input type="file" onChange={(e) => {
+        setImageSelected(e.target.files[0])
+      }} />
+    <button onClick={uploadImage}>
+      Upload Image
+      </button>
+      </div>
     </div>
   );
 }
